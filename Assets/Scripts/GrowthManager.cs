@@ -5,15 +5,16 @@ using UnityEngine;
 public class GrowthManager : MonoBehaviour
 {
 	public bool continueGrowing = true;
-	public bool colorOn = false;
-	public int growthCounter = 0;
 	public float totalGrowthRangeEnd = 0.0f;
+	public int growthCounter = 0;
 	public List<float> growthRangeEnds;
 
+	private bool colorOn = true;
 	private float randomGrowthIndex = 0.0f;
 	private float correspondingKey = 0.0f;
 	private float growthModifier = 0.05f;
 	private float colorChangeAmount = .01f;
+	private float colorlessChangeAmount = .5f;
 	private int tileCount;
 	private int growthSpeed = 1; // 60/growthSpeed equals tile growth per second, minimum 1.
 	private int frameCounter = 0;
@@ -25,39 +26,9 @@ public class GrowthManager : MonoBehaviour
 	
     void FixedUpdate() {
 		tileCount = board.tiles.Count;
+		// If the board is set to grow, grow.
 		if (continueGrowing && frameCounter == growthSpeed) {
-			++growthCounter;
-			frameCounter = 0;
-			growthRangeEnds = new List<float>(board.tiles.Keys);
-			totalGrowthRangeEnd = growthRangeEnds[(tileCount - 1)];
-			randomGrowthIndex =	Random.Range(0.0f, totalGrowthRangeEnd);
-
-			// Find GameObject with nearest key (growthRangeEnd) greater than or equal to randomGrowthIndex.
-			// If (index >= 0), index corresponds to the correct (existing) GameObject. Else, the (~index + 1) corresponds to the correct GameObject.
-			int index = growthRangeEnds.BinarySearch(randomGrowthIndex);
-			if (index < 0) {
-				index = (~index);
-			}
-			correspondingKey = growthRangeEnds[index];
-
-			// Change corresponding GameObject's sprite renderer's color.
-			Color tileColor = board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color;
-			if (colorOn) {
-				float H, S, V;
-				Color.RGBToHSV(new Color(tileColor.r, tileColor.g, tileColor.b, 1), out H, out S, out V);
-				board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = Color.HSVToRGB((H + colorChangeAmount), 1, 1);
-			}
-			else {
-				tileColor = new Vector4((tileColor.r + colorChangeAmount), (tileColor.g + colorChangeAmount), (tileColor.b + colorChangeAmount), 1);
-				board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = tileColor;
-				if (board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color.r >= 1) {
-					Debug.Log("Tile " + index + " removed.");
-					removeGrownTileFromDictionary(index, correspondingKey);
-				}
-			}
-	
-			// Change the growthRangeEnd of chosen tile and shift the growthRangeEnd of all tiles with a greater index accordingly.
-			changeGrowthRange(index, growthModifier);
+			grow();
 		}
 		++frameCounter;
     }
@@ -82,5 +53,43 @@ public class GrowthManager : MonoBehaviour
 	private void removeGrownTileFromDictionary(int index, float correspondingKey) {
 		board.tiles.Remove(correspondingKey);
 		changeGrowthRange(index, (growthModifier * (1/colorChangeAmount)));
+	}
+
+	private void grow() {
+		++growthCounter;
+		frameCounter = 0;
+		growthRangeEnds = new List<float>(board.tiles.Keys);
+		totalGrowthRangeEnd = growthRangeEnds[(tileCount - 1)];
+		randomGrowthIndex =	Random.Range(0.0f, totalGrowthRangeEnd);
+
+		// Find GameObject with nearest key (growthRangeEnd) greater than or equal to randomGrowthIndex.
+		// If (index >= 0), index corresponds to the correct (existing) GameObject. Else, the (~index + 1) corresponds to the correct GameObject.
+		int index = growthRangeEnds.BinarySearch(randomGrowthIndex);
+		if (index < 0) {
+			index = (~index);
+		}
+		correspondingKey = growthRangeEnds[index];
+
+		// Change corresponding GameObject's sprite renderer's color.
+		// Color mode:
+		Color tileColor = board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color;
+		if (colorOn) {
+			float H, S, V;
+			Color.RGBToHSV(new Color(tileColor.r, tileColor.g, tileColor.b, 1), out H, out S, out V);
+			board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = Color.HSVToRGB((H + colorChangeAmount), 1, 1);
+		}
+		// Colorless mode:
+		else {
+			tileColor = new Vector4((tileColor.r + colorlessChangeAmount), (tileColor.g + colorlessChangeAmount), (tileColor.b + colorlessChangeAmount), 1);
+			board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = tileColor;
+			// If the tile is fully grown, remove it from the dictionary.
+			if (board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color.r >= 1) {
+				Debug.Log("Tile " + index + " removed.");
+				removeGrownTileFromDictionary(index, correspondingKey);
+			}
+		}
+	
+		// Change the growthRangeEnd of chosen tile and shift the growthRangeEnd of all tiles with a greater index accordingly.
+		changeGrowthRange(index, growthModifier);
 	}
 }
