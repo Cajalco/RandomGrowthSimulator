@@ -12,7 +12,7 @@ public class GrowthManager : MonoBehaviour
 	private bool colorOn = true;
 	private float randomGrowthIndex = 0.0f;
 	private float correspondingKey = 0.0f;
-	private float growthModifier = 0.05f;
+	private float growthModifier = 1.0f;
 	private float colorChangeAmount = .01f;
 	private float colorlessChangeAmount = .5f;
 	private int tileCount;
@@ -26,9 +26,14 @@ public class GrowthManager : MonoBehaviour
 	
     void FixedUpdate() {
 		tileCount = board.tiles.Count;
-		// If the board is set to grow, grow.
+		// If the board is set to grow, grow one tile per 100.
 		if (continueGrowing && frameCounter == growthSpeed) {
-			grow();
+			if (tileCount < 50) {
+				grow();
+			}
+			for (int i = 0; i < tileCount/100; ++i) {
+				grow();
+			}
 		}
 		++frameCounter;
     }

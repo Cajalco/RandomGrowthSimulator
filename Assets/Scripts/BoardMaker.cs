@@ -10,8 +10,8 @@ public class BoardMaker : MonoBehaviour
 	public SortedDictionary<float, GameObject> tiles = new SortedDictionary<float, GameObject>();
 
 	// Change the board size to not be hardcoded when you get a menu or other selection tool.
-	private int width = 10;
-	private int height = 10;
+	private int width = 30;
+	private int height = 30;
 	private float initialRangeEnd = 1.0f;
 
 	void Awake() {
@@ -24,5 +24,21 @@ public class BoardMaker : MonoBehaviour
 			}
 		}
 		parent.transform.position = new Vector3(0.5f, 0.5f, 0);
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 }
