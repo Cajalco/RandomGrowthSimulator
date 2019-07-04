@@ -253,5 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6a2106b709b674aaba63d01a7e05c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growthRangeEnd: 0
-  growthModifier: 0.05
+  continueGrowing: 1
+  colorOn: 1
+  growthCounter: 0
+  totalGrowthRangeEnd: 0
+  growthRangeEnds: []
