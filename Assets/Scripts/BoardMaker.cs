@@ -10,8 +10,8 @@ public class BoardMaker : MonoBehaviour
 	public SortedDictionary<float, GameObject> tiles = new SortedDictionary<float, GameObject>();
 
 	// Change the board size to not be hardcoded when you get a menu or other selection tool.
-	private int width = 30;
-	private int height = 30;
+	private int width = 194;	// 18, 34, 50, 66, 82, 98, 114, 130, 146, 162, 178, 194, 210 // Good widths are multiples of 16 + an offset
+	private int height = 108;	//  9, 18, 27, 36, 45, 54,  63,  72,  81,  90,  99, 108, 117 // Good heights are multiples of 9
 	private float initialRangeEnd = 1.0f;
 
 	void Awake() {

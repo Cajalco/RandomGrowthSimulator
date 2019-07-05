@@ -12,11 +12,11 @@ public class GrowthManager : MonoBehaviour
 	private bool colorOn = true;
 	private float randomGrowthIndex = 0.0f;
 	private float correspondingKey = 0.0f;
-	private float growthModifier = 1.0f;
+	private float growthModifier = 0.0f;
 	private float colorChangeAmount = .01f;
 	private float colorlessChangeAmount = .5f;
 	private int tileCount;
-	private int growthSpeed = 1; // 60/growthSpeed equals tile growth per second, minimum 1.
+	private int growthSpeed = 1; // 60/growthSpeed equals tile growth per second, minimum value 1.
 	private int frameCounter = 0;
 	private BoardMaker board;
 
@@ -26,12 +26,12 @@ public class GrowthManager : MonoBehaviour
 	
     void FixedUpdate() {
 		tileCount = board.tiles.Count;
-		// If the board is set to grow, grow one tile per 100.
+		// If the board is set to grow, grow one tile per 50.
 		if (continueGrowing && frameCounter == growthSpeed) {
 			if (tileCount < 50) {
 				grow();
 			}
-			for (int i = 0; i < tileCount/100; ++i) {
+			for (int i = 0; i < tileCount/50; ++i) {
 				grow();
 			}
 		}
@@ -95,6 +95,8 @@ public class GrowthManager : MonoBehaviour
 		}
 	
 		// Change the growthRangeEnd of chosen tile and shift the growthRangeEnd of all tiles with a greater index accordingly.
-		changeGrowthRange(index, growthModifier);
+		if (growthModifier > 0) {
+			changeGrowthRange(index, growthModifier);
+		}
 	}
 }
