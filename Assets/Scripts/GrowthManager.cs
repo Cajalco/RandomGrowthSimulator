@@ -14,8 +14,8 @@ public class GrowthManager : MonoBehaviour
 	private float randomGrowthIndex = 0.0f;
 	private float correspondingKey = 0.0f;
 	private float growthModifier = 0.0f;
-	private float colorChangeAmount = .01f;
-	private float colorlessChangeAmount = .5f;
+	private float colorChangeModifier = .01f;
+	private float colorlessChangeModifier = .5f;
 	private int tileCount;
 	private int growthSpeed = 1; // 60/growthSpeed equals tile growth per second, minimum value 1.
 	private int frameCounter = 0;
@@ -63,7 +63,7 @@ public class GrowthManager : MonoBehaviour
     // Function not necessary in color mode because colors loop according to ROYGBIV while in colorless mode, tiles only change linearly from black to white.
 	private void removeGrownTileFromDictionary(int index, float correspondingKey) {
 		board.tiles.Remove(correspondingKey);
-		changeGrowthRange(index, (growthModifier * (1/colorChangeAmount)));
+		changeGrowthRange(index, (growthModifier * (1/colorChangeModifier)));
 	}
 
 	private void grow() {
@@ -87,11 +87,11 @@ public class GrowthManager : MonoBehaviour
 		if (colorOn) {
 			float H, S, V;
 			Color.RGBToHSV(new Color(tileColor.r, tileColor.g, tileColor.b, 1), out H, out S, out V);
-			board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = Color.HSVToRGB((H + colorChangeAmount), 1, 1);
+			board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = Color.HSVToRGB((H + colorChangeModifier), 1, 1);
 		}
 		// Colorless mode:
 		else {
-			tileColor = new Vector4((tileColor.r + colorlessChangeAmount), (tileColor.g + colorlessChangeAmount), (tileColor.b + colorlessChangeAmount), 1);
+			tileColor = new Vector4((tileColor.r + colorlessChangeModifier), (tileColor.g + colorlessChangeModifier), (tileColor.b + colorlessChangeModifier), 1);
 			board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color = tileColor;
 			// If the tile is fully grown, remove it from the dictionary.
 			if (board.tiles[correspondingKey].GetComponent<SpriteRenderer>().color.r >= 1) {

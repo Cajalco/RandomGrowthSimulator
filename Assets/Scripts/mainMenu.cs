@@ -9,6 +9,7 @@ public class mainMenu : MonoBehaviour
     public GameObject boardWidthSliderText;
     public GameObject boardHeightSliderText;
     public GameObject musicVolumeSliderText;
+    public ConfigurationManager configuration;
 
     public void play() {
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -24,13 +25,16 @@ public class mainMenu : MonoBehaviour
     
     public void boardWidthSliderChanged(float newValue) {
         boardWidthSliderText.GetComponent<TMP_Text>().text = newValue.ToString();
+        configuration.setBoardWidth((int)newValue);
     }
 
     public void boardHeightSliderChanged(float newValue) {
         boardHeightSliderText.GetComponent<TMP_Text>().text = newValue.ToString();
+        configuration.setBoardHeight((int)newValue);
     }
 
     public void musicVolumeSliderChanged(float newValue) {
         musicVolumeSliderText.GetComponent<TMP_Text>().text = newValue.ToString();
-    }
+        configuration.setMusicVolume((int)newValue);
+        }
 }

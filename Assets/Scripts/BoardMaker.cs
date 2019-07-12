@@ -13,8 +13,12 @@ public class BoardMaker : MonoBehaviour
 	private int height;	    //  9, 18, 27, 36, 45, 54,  63,  72,  81,  90,  99, 108, 117 // Good heights are multiples of 9
 	private float initialRangeEnd = 1.0f;
 
-	void Awake() {
+    void Awake() {
 		GameObject tile;
+        width = ConfigurationManager.Instance.getBoardWidth();
+        height = ConfigurationManager.Instance.getBoardHeight();
+        Debug.Log("Width: " + width);
+        Debug.Log("Height: " + height);
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < width; ++j) {
 				tile = Instantiate(tilePrefab, new Vector3(j, i, 0f), Quaternion.identity, parent.transform);
