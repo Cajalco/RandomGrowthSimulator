@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GrowthManager : MonoBehaviour
 {
@@ -25,7 +26,10 @@ public class GrowthManager : MonoBehaviour
 	}
 	
     void FixedUpdate() {
-		tileCount = board.tiles.Count;
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
+        tileCount = board.tiles.Count;
 		// If the board is set to grow, grow one tile per 50.
 		if (continueGrowing && frameCounter == growthSpeed) {
 			if (tileCount < 50) {
@@ -55,6 +59,8 @@ public class GrowthManager : MonoBehaviour
 		}
 	}
 
+    // Remove tile from dictionary in colorless mode to prevent fully white tiles from hogging weight.
+    // Function not necessary in color mode because colors loop according to ROYGBIV while in colorless mode, tiles only change linearly from black to white.
 	private void removeGrownTileFromDictionary(int index, float correspondingKey) {
 		board.tiles.Remove(correspondingKey);
 		changeGrowthRange(index, (growthModifier * (1/colorChangeAmount)));
