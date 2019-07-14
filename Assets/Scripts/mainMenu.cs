@@ -9,6 +9,8 @@ public class mainMenu : MonoBehaviour
     public GameObject boardWidthSliderText;
     public GameObject boardHeightSliderText;
     public GameObject musicVolumeSliderText;
+    public GameObject growthModifierSliderText;
+    public GameObject colorChangeModifierSliderText;
     public GameObject configurationManager;
     public ConfigurationManager configuration;
 
@@ -26,6 +28,17 @@ public class mainMenu : MonoBehaviour
 	}
 
 	public void auto() {
+        configuration.setGrowthModifier(Random.Range(0, 20)/4.0f);
+        if (configuration.getGrowthModifier() == 0) {
+            configuration.setBoardWidth(98);
+            configuration.setBoardHeight(54);
+        }
+        else {
+            configuration.setBoardWidth(50);
+            configuration.setBoardHeight(27);
+        }
+        configuration.setColorChangeModifier(Random.Range(1, 99)/100.0f);
+        Debug.Log(configuration.getColorChangeModifier());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
@@ -43,4 +56,14 @@ public class mainMenu : MonoBehaviour
         musicVolumeSliderText.GetComponent<TMP_Text>().text = newValue.ToString();
         configuration.setMusicVolume((int)newValue);
         }
+
+    public void growthModifierSliderChanged(float newValue) {
+        growthModifierSliderText.GetComponent<TMP_Text>().text = (newValue/4).ToString();
+        configuration.setGrowthModifier(newValue/4);
+    }
+
+    public void colorChangeModifierSliderChanged(float newValue) {
+        colorChangeModifierSliderText.GetComponent<TMP_Text>().text = (newValue/100).ToString();
+        configuration.setColorChangeModifier(newValue/100);
+    }
 }

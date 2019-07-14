@@ -13,8 +13,8 @@ public class GrowthManager : MonoBehaviour
 	private bool colorOn = true;
 	private float randomGrowthIndex = 0.0f;
 	private float correspondingKey = 0.0f;
-	private float growthModifier = 0.0f;
-	private float colorChangeModifier = .01f;
+    private float growthModifier;
+    private float colorChangeModifier;
 	private float colorlessChangeModifier = .5f;
 	private int tileCount;
 	private int growthSpeed = 1; // 60/growthSpeed equals tile growth per second, minimum value 1.
@@ -23,7 +23,9 @@ public class GrowthManager : MonoBehaviour
 
 	void Start() {
 		board = GetComponent<BoardMaker>();
-	}
+        growthModifier = ConfigurationManager.Instance.getGrowthModifier();
+        colorChangeModifier = ConfigurationManager.Instance.getColorChangeModifier();
+    }
 	
     void FixedUpdate() {
         tileCount = board.tiles.Count;

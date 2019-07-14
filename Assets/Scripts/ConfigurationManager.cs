@@ -9,8 +9,8 @@ public class ConfigurationManager : MonoBehaviour
     private int boardWidth = 1;
     private int boardHeight = 1;
     private int musicVolume = 0;
-    private float colorChangeModifier = 0.0f;
-    private float growthModifier = 0.0f;
+    private float colorChangeModifier;
+    private float growthModifier;
     private bool colorMode;
 
     private void Awake() {
