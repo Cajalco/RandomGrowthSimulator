@@ -26,10 +26,17 @@ public class GrowthManager : MonoBehaviour
 	}
 	
     void FixedUpdate() {
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+        tileCount = board.tiles.Count;
+        if (Input.GetMouseButtonDown(0)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
-        tileCount = board.tiles.Count;
+        if (Input.GetMouseButtonDown(1)) {
+            if (continueGrowing == false) {
+                continueGrowing = true;
+                grow();
+            }
+            else continueGrowing = false;
+        }
 		// If the board is set to grow, grow one tile per 50.
 		if (continueGrowing && frameCounter == growthSpeed) {
 			if (tileCount < 50) {

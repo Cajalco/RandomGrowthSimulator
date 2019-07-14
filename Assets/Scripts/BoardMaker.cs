@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BoardMaker : MonoBehaviour
 {
-
 	public GameObject tilePrefab;
 	public GameObject parent;
 	public SortedDictionary<float, GameObject> tiles = new SortedDictionary<float, GameObject>();
@@ -17,8 +16,6 @@ public class BoardMaker : MonoBehaviour
 		GameObject tile;
         width = ConfigurationManager.Instance.getBoardWidth();
         height = ConfigurationManager.Instance.getBoardHeight();
-        Debug.Log("Width: " + width);
-        Debug.Log("Height: " + height);
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < width; ++j) {
 				tile = Instantiate(tilePrefab, new Vector3(j, i, 0f), Quaternion.identity, parent.transform);

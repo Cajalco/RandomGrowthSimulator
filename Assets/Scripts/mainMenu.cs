@@ -9,7 +9,13 @@ public class mainMenu : MonoBehaviour
     public GameObject boardWidthSliderText;
     public GameObject boardHeightSliderText;
     public GameObject musicVolumeSliderText;
+    public GameObject configurationManager;
     public ConfigurationManager configuration;
+
+    private void Start() {
+        configurationManager = GameObject.Find("ConfigurationManager");
+        configuration = configurationManager.GetComponent<ConfigurationManager>();
+    }
 
     public void play() {
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
