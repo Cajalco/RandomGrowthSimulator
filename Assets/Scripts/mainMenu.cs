@@ -17,6 +17,7 @@ public class mainMenu : MonoBehaviour
     private void Start() {
         configurationManager = GameObject.Find("ConfigurationManager");
         configuration = configurationManager.GetComponent<ConfigurationManager>();
+        configuration.setGrowthModifier(0.0f);
     }
 
     public void play() {
